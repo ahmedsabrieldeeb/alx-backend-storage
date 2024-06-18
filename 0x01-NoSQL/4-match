@@ -1,1 +1,2 @@
-#!/usr/bin/bash
+// list all matching the same name
+db.school.find({name: "Holberton school"})
