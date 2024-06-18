@@ -1,1 +1,2 @@
-#!/usr/bin/bash
+// create new database
+use my_db
