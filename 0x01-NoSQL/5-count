@@ -1,1 +1,2 @@
-#!/usr/bin/bash
+// count all matches in the collection
+db.school.count()
