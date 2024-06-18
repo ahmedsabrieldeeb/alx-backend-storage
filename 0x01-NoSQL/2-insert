@@ -1,1 +1,2 @@
-#!/usr/bin/bash
+// inserting a document
+db.school.insertOne({"name" : "Holberton school"})
