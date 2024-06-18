@@ -1,2 +1,2 @@
 // update all matches
-db.school.update({name: "Holberton school"}, {$set: {address: "972 Mission St."}}, {multi: true})
+db.school.update({name: "Holberton school"}, {$set: {address: "972 Mission street"}}, {multi: true})
