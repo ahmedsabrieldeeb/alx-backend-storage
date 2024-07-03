@@ -48,12 +48,6 @@ class Cache():
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store data in cache and return a key
-
-        Args:
-            data: Data to store
-
-        Returns:
-            key: Key to access the data
         """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
@@ -63,13 +57,6 @@ class Cache():
             Union[str, bytes, int, float]:
         """
         Get data from cache
-
-        Args:
-            key: Key to get its value
-            fn (=None): Function to convert the data
-
-        Returns:
-            data: Converted data
         """
         data = self._redis.get(key)
         if fn:
@@ -79,23 +66,26 @@ class Cache():
     def get_str(self, key: str) -> str:
         """
         Get data from cache as string
-
-        Args:
-            key: Key to get its value
-
-        Returns:
-            data: Data as string
         """
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
     def get_int(self, key: str) -> int:
         """
         Get data from cache as integer
-
-        Args:
-            key: Key to get its value
-
-        Returns:
-            data: Data as integer
         """
         return self.get(key, fn=int)
+
+
+def replay(method: Callable) -> None:
+    """
+    Display the history of calls of a particular function
+    """
+    r = redis.Redis()
+    key = method.__qualname__
+    count = r.get(key).decode("utf-8")
+    inputs = r.lrange(f"{key}:inputs", 0, -1)
+    outputs = r.lrange(f"{key}:outputs", 0, -1)
+
+    print(f"{key} was called {count} times:")
+    for i, o in zip(inputs, outputs):
+        print(f"{key}(*{i.decode('utf-8')}) -> {o.decode('utf-8')}")
